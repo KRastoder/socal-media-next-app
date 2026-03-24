@@ -3,6 +3,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth/auth-client";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -38,37 +50,72 @@ export default function SignUpPage() {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "50px auto" }}>
-      <h1>Sign Up</h1>
+    <div className="min-h-screen flex items-center justify-center bg-muted/40 px-4">
+      <Card className="w-full max-w-md shadow-xl">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl text-center">
+            Create an account
+          </CardTitle>
+          <CardDescription className="text-center">
+            Enter your details to get started
+          </CardDescription>
+        </CardHeader>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label>Name</Label>
+              <Input
+                placeholder="John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+            <div className="space-y-2">
+              <Label>Password</Label>
+              <Input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Creating..." : "Sign Up"}
-        </button>
+            {error && (
+              <p className="text-sm text-red-500 text-center">{error}</p>
+            )}
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </form>
+            <Button
+              type="submit"
+              className="w-full outline bg-gray-900 text-xl hover:cursor-pointer"
+              disabled={loading}
+            >
+              {loading ? "Creating account..." : "Sign Up"}
+            </Button>
+          </form>
+        </CardContent>
+
+        <CardFooter className="flex justify-center text-sm text-muted-foreground gap-1">
+          Already have an account?
+          <Link href={"/signin"} className="underline">
+            Sign in
+          </Link>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
