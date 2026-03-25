@@ -1,4 +1,4 @@
-import { getMyPosts } from "../actions/posts-actions";
+import { deletePostById, getMyPosts } from "../actions/posts-actions";
 import Post from "@/components/Post";
 
 export default async function MyPostsPage() {
@@ -23,14 +23,22 @@ export default async function MyPostsPage() {
       ) : (
         <div className="space-y-4">
           {posts.map((post) => (
-            <Post
-              key={post.id}
-              title={post.title}
-              content={post.content}
-              userName={post.userName}
-              image={post.image}
-              createdAt={post.createdAt.toISOString()}
-            />
+            <div>
+              <Post
+                key={post.id}
+                title={post.title}
+                content={post.content}
+                userName={post.userName}
+                image={post.image}
+                createdAt={post.createdAt.toISOString()}
+              />
+              <form action={deletePostById}>
+                <input type="hidden" name="id" value={post.id} />
+                <button type="submit" className="text-red-500">
+                  Delete
+                </button>
+              </form>
+            </div>
           ))}
         </div>
       )}

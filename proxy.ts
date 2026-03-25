@@ -20,9 +20,15 @@ export async function proxy(request: NextRequest) {
     }
   }
 
+  if (pathname.startsWith("/my-posts")) {
+    if (!session?.user) {
+      return NextResponse.redirect(new URL("/signup", request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/create-post", "/signin", "/signup"],
+  matcher: ["/create-post", "/signin", "/signup", "/my-posts"],
 };

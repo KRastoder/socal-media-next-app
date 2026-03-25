@@ -48,3 +48,27 @@ export async function getMyPosts(): Promise<GetMyPostsResult> {
     };
   }
 }
+export async function deletePostById(formData: FormData) {
+  const id = formData.get("id") as string;
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const deleted = await db.delete(post).where(eq(post.id, id));
+
+    return {
+      success: true,
+      deleted,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      error: "Failed to delete post",
+    };
+  }
+}
