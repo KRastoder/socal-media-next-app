@@ -1,5 +1,4 @@
 "use server";
-
 import { db } from "@/lib/db";
 import { post } from "@/lib/db/schemas/schema";
 import { nanoid } from "nanoid";

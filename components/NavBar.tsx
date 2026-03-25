@@ -14,6 +14,12 @@ export default function NavBar() {
         Sign Up
       </Link>
       <Link
+        href="/my-posts"
+        className="outline outline-red-900 p-2 bg-gray-900 "
+      >
+        My posts
+      </Link>
+      <Link
         href="/create-post"
         className="outline outline-red-900 p-2 bg-gray-900 "
       >

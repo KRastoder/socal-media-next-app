@@ -6,17 +6,23 @@ export async function proxy(request: NextRequest) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  const { pathname } = request.nextUrl;
 
-  // THIS IS NOT SECURE!
-  // This is the recommended approach to optimistically redirect users
-  // We recommend handling auth checks in each page/route
-  if (!session) {
-    return NextResponse.redirect(new URL("/signin", request.url));
+  if (pathname.startsWith("/signin") || pathname.startsWith("/signup")) {
+    if (session?.user) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  if (pathname.startsWith("/create-post")) {
+    if (!session?.user) {
+      return NextResponse.redirect(new URL("/signup", request.url));
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/create-post"],
+  matcher: ["/create-post", "/signin", "/signup"],
 };
