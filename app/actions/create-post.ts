@@ -6,6 +6,7 @@ import { nanoid } from "nanoid";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
+//TODO ADD IMAGE UPLOAD
 export async function createPost(data: {
   title: string;
   content: string;
