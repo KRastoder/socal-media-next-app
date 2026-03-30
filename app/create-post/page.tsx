@@ -32,7 +32,8 @@ export default function CreatePostPage() {
       setContent("");
       setImage("");
       setSuccess("Post created");
-    } catch (err) {
+    } catch (e) {
+      console.error("Post failed to create", e);
       setError("Unexpected error occurred");
     } finally {
       setLoading(false);
@@ -74,6 +75,7 @@ export default function CreatePostPage() {
         )}
 
         <button
+          type="submit"
           disabled={loading}
           className="w-full bg-black text-white py-2 rounded"
         >

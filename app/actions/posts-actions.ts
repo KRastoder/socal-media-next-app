@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { post } from "@/lib/db/schemas/schema";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 
 type PostType = {
   id: string;
@@ -42,12 +42,14 @@ export async function getMyPosts(): Promise<GetMyPostsResult> {
       posts,
     };
   } catch (e) {
+    console.error(e);
     return {
       success: false,
       error: "Failed to fetch posts",
     };
   }
 }
+
 export async function deletePostById(formData: FormData) {
   const id = formData.get("id") as string;
   try {
@@ -66,6 +68,48 @@ export async function deletePostById(formData: FormData) {
       deleted,
     };
   } catch (e) {
+    console.error(e);
+    return {
+      success: false,
+      error: "Failed to delete post",
+    };
+  }
+}
+
+export async function updatePost(formData: FormData) {
+  try {
+    const id = formData.get("id") as string;
+    const title = formData.get("title") as string;
+    const content = formData.get("content") as string;
+    const image = formData.get("image") as string | null;
+
+    if (!id || !title || !content) {
+      return { success: false, error: "Missing required fields" };
+    }
+
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user) {
+      return { success: false, error: "Unauthorized" };
+    }
+    const updated = await db
+      .update(post)
+      .set({
+        title,
+        content,
+        image: image || null,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(post.id, id), eq(post.userId, session.user.id)));
+
+    return {
+      success: true,
+      data: updated,
+    };
+  } catch (e) {
+    console.error(e);
     return {
       success: false,
       error: "Failed to delete post",

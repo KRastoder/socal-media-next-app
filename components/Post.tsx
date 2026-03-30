@@ -1,4 +1,6 @@
+import { deletePostById } from "@/app/actions/posts-actions";
 type PostProps = {
+  id: string;
   title: string;
   content: string;
   userName: string;
@@ -7,6 +9,7 @@ type PostProps = {
 };
 
 export default function Post({
+  id,
   title,
   content,
   userName,
@@ -29,14 +32,22 @@ export default function Post({
       <h2 className="text-lg font-bold">{title}</h2>
 
       {/* Content */}
-      <p className="text-gray-700 text-sm">{content}</p>
+      <div className="flex justify-between items-center">
+        <p className="text-gray-700 text-sm">{content}</p>
+        <form action={deletePostById}>
+          <input type="hidden" name="id" value={id} />
+          <button type="submit" className="text-red-500 hover:cursor-pointer">
+            Delete
+          </button>
+        </form>
+      </div>
 
       {/* Image (only if exists) */}
       {image && (
         <div className="mt-3">
           <img
             src={image}
-            alt="Post image"
+            alt="Post images"
             className="w-full rounded-xl object-cover max-h-[400px]"
           />
         </div>

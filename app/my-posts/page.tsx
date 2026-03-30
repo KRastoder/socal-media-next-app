@@ -23,21 +23,16 @@ export default async function MyPostsPage() {
       ) : (
         <div className="space-y-4">
           {posts.map((post) => (
-            <div>
+            <div key={post.id}>
               <Post
                 key={post.id}
+                id={post.id}
                 title={post.title}
                 content={post.content}
                 userName={post.userName}
                 image={post.image}
                 createdAt={post.createdAt.toISOString()}
               />
-              <form action={deletePostById}>
-                <input type="hidden" name="id" value={post.id} />
-                <button type="submit" className="text-red-500">
-                  Delete
-                </button>
-              </form>
             </div>
           ))}
         </div>

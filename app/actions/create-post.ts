@@ -1,11 +1,12 @@
 "use server";
+
 import { db } from "@/lib/db";
 import { post } from "@/lib/db/schemas/schema";
 import { nanoid } from "nanoid";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
-//TODO ADD IMAGE UPLOAD
+//TODO ADD IMAGE UPLOAD AND MOVE TO post-actions.ts file
 export async function createPost(data: {
   title: string;
   content: string;
