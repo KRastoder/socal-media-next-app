@@ -5,7 +5,8 @@ type PostProps = {
   content: string;
   userName: string;
   image?: string | null;
-  createdAt?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export default function Post({
@@ -34,12 +35,6 @@ export default function Post({
       {/* Content */}
       <div className="flex justify-between items-center">
         <p className="text-gray-700 text-sm">{content}</p>
-        <form action={deletePostById}>
-          <input type="hidden" name="id" value={id} />
-          <button type="submit" className="text-red-500 hover:cursor-pointer">
-            Delete
-          </button>
-        </form>
       </div>
 
       {/* Image (only if exists) */}

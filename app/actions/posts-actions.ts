@@ -21,7 +21,7 @@ type GetMyPostsResult =
   | { success: true; posts: PostType[] }
   | { success: false; error: string };
 
-export async function getMyPosts(): Promise<GetMyPostsResult> {
+export async function getLoggedInUserPosts(): Promise<GetMyPostsResult> {
   try {
     const session = await auth.api.getSession({
       headers: await headers(),
@@ -114,5 +114,19 @@ export async function updatePost(formData: FormData) {
       success: false,
       error: "Failed to delete post",
     };
+  }
+}
+export async function getPostById(id: string) {
+  try {
+    const singlePost = await db.select().from(post).where(eq(post.id, id));
+
+    if (!singlePost || singlePost.length === 0) {
+      return null;
+    }
+
+    return singlePost[0];
+  } catch (e) {
+    console.error("Get post by id error: ", e);
+    return null;
   }
 }
